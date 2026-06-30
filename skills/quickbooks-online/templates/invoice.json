@@ -1,0 +1,19 @@
+{
+  "CustomerRef": {"value": "CUSTOMER_ID_PLACEHOLDER"},
+  "TxnDate": "2026-01-15",
+  "DueDate": "2026-01-29",
+  "Deposit": 0.00,
+  "Line": [
+    {
+      "DetailType": "SalesItemLineDetail",
+      "Amount": 2500.00,
+      "Description": "Odor removal treatment",
+      "SalesItemLineDetail": {
+        "ItemRef": {"value": "1", "name": "Base Treatment"},
+        "Qty": 2000,
+        "UnitPrice": 1.25
+      }
+    }
+  ],
+  "CustomerMemo": {"value": "Valid 30 days. 50% deposit to schedule."}
+}

@@ -1,0 +1,30 @@
+{
+  "CustomerRef": {"value": "CUSTOMER_ID_PLACEHOLDER"},
+  "TxnDate": "2026-01-15",
+  "ExpirationDate": "2026-02-14",
+  "Line": [
+    {
+      "DetailType": "SalesItemLineDetail",
+      "Amount": 2500.00,
+      "Description": "Odor removal - 2000 sqft, vaulted ceilings, moderate tobacco",
+      "SalesItemLineDetail": {
+        "ItemRef": {"value": "1", "name": "Base Treatment"},
+        "Qty": 2000,
+        "UnitPrice": 1.25
+      }
+    },
+    {
+      "DetailType": "SalesItemLineDetail",
+      "Amount": 350.00,
+      "Description": "Cigarette >5yrs extended treatment",
+      "SalesItemLineDetail": {"ItemRef": {"value": "2", "name": "Cigarette Extended Treatment"}, "Qty": 1, "UnitPrice": 350.00}
+    },
+    {
+      "DetailType": "SalesItemLineDetail",
+      "Amount": 75.00,
+      "Description": "Travel surcharge - Premium Region",
+      "SalesItemLineDetail": {"ItemRef": {"value": "3", "name": "Travel Surcharge"}, "Qty": 1, "UnitPrice": 75.00}
+    }
+  ],
+  "CustomerMemo": {"value": "Valid 30 days. 50% deposit to schedule."}
+}
