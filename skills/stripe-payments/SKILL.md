@@ -1,6 +1,13 @@
 ---
 name: stripe-payments
-description: Create Stripe checkout sessions, payment links, invoices, and customers via Stripe REST API. Use when processing payments, sending invoices, or managing customer billing for a service business.
+description: "Create Stripe checkout sessions, payment links, invoices, and customers via Stripe REST API. Use when processing payments, sending invoices, or managing customer billing for a service business."
+version: "1.0.0"
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [stripe, payments, invoicing, checkout, small-business]
+    related_skills: [lead-to-payment, crm-lite, estimator-engine, quickbooks-online]
 ---
 
 # Stripe Payments Skill

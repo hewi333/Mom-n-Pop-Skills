@@ -7,7 +7,7 @@ license: MIT
 metadata:
   hermes:
     tags: [crm, sqlite, small-business, customer-management]
-    related_skills: [estimator-engine, quickbooks-online, mailchimp-integration, stripe-payments, outlook-graph, base44-deploy]
+    related_skills: [estimator-engine, quickbooks-online, mailchimp-integration, stripe-payments, outlook-graph, base44-site-spec]
 ---
 
 # CRM-Lite — Lightweight SQLite CRM for Small Business
@@ -109,10 +109,6 @@ Agent: Updates estimate status=sent, creates activity, creates task for follow-u
 ```
 Agent: Queries all leads/customers, summarizes by stage, sends to the owner via Telegram
 ```
-
-## End-to-End Demo Flow
-
-This skill is the central hub for the demo flow. The full orchestration across all 7 skills is documented in `references/demo-flow.md` — read it before building or recording the demo. It covers: lead intake -> estimate -> Stripe payment link -> email -> payment confirmation -> calendar scheduling -> daily report, plus the 90-second demo script and credential checklist.
 
 ## Common Pitfalls
 

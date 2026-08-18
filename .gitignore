@@ -1,0 +1,42 @@
+# Secrets — NEVER commit real credentials
+.env
+*.key
+*.pem
+token.json
+google_token.json
+o365_token.json
+qbo_tokens.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# Local data files (CRM databases, exports, etc.)
+*.db
+*.sqlite
+*.sqlite3
+data/
+exports/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+
+# Hermes runtime artifacts
+.hermes-cache/

@@ -1,6 +1,13 @@
 ---
 name: base44-site-spec
 description: "Architecture and content spec for rebuilding a small business website on Base44. NOT a deploy tool — Base44 is a no-code drag-and-drop builder with no agent-accessible CLI. Use this as a planning reference for page structure, copy, estimator widget HTML, SEO requirements, and DNS pitfalls when rebuilding a site on Base44."
+version: "1.0.0"
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [website, planning, base44, no-code, small-business]
+    related_skills: [estimator-engine, agent-cheatsheet-builder]
 ---
 
 # Base44 Site Specification

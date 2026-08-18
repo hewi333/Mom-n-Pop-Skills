@@ -1,6 +1,13 @@
 ---
 name: outlook-graph
-description: Send and read emails, manage calendar events, and access contacts via Microsoft Graph API for Outlook/M365. Use when emailing customers, scheduling jobs, or managing partner communications.
+description: "Send and read emails, manage calendar events, and access contacts via Microsoft Graph API for Outlook/M365. Use when emailing customers, scheduling jobs, or managing partner communications."
+version: "1.0.0"
+author: Hermes Agent
+license: MIT
+metadata:
+  hermes:
+    tags: [email, microsoft-graph, outlook, m365, communications, small-business]
+    related_skills: [lead-to-payment, crm-lite, stripe-payments]
 ---
 
 # Outlook Graph Skill

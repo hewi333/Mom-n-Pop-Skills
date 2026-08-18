@@ -1,13 +1,13 @@
 ---
 name: lead-to-payment
 description: "Use when a new lead arrives (email, Telegram message, or website form) and needs to move through the full pipeline: qualify the lead, generate an estimate, get owner approval, create a payment link, draft a customer email for owner review, and track payment. This is the master flow that orchestrates estimator-engine, crm-lite, stripe-payments, himalaya (IMAP/SMTP), and quickbooks-online. Owner stays in the loop and approves before anything is sent or charged."
-version: "2.0.0"
+version: "1.0.0"
 author: Hermes Agent
 license: MIT
 metadata:
   hermes:
     tags: [workflow, orchestration, sales-pipeline, lead-to-cash, owner-in-the-loop]
-    related_skills: [estimator-engine, crm-lite, stripe-payments, himalaya, quickbooks-online]
+    related_skills: [estimator-engine, crm-lite, stripe-payments, quickbooks-online]
 ---
 
 # Lead-to-Payment — Master Sales Flow

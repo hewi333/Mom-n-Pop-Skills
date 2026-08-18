@@ -1,14 +1,14 @@
 ---
 name: stripe-link-cli
-description: Agent payments via Stripe Link — cards, SPT, approvals.
-version: 0.1.0
-author: Teknium (teknium1), Hermes Agent
+description: "Agent-initiated spend via Stripe Link — requests purchases, issues virtual cards, owner approves in the Link mobile/web app. Hermes cannot self-approve. The 'spend' rail to complement stripe-payments."
+version: "1.0.0"
+author: Hermes Agent
 license: MIT
 platforms: [linux, macos]
 metadata:
   hermes:
-    tags: [Payments, Stripe, Link, Checkout, MPP]
-    related_skills: [mpp-agent, stripe-projects]
+    tags: [stripe, link, payments, agent-spend, small-business]
+    related_skills: [stripe-payments, lead-to-payment]
 ---
 
 # Stripe Link CLI Skill
