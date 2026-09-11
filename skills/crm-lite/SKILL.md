@@ -7,7 +7,7 @@ license: MIT
 metadata:
   hermes:
     tags: [crm, sqlite, small-business, customer-management]
-    related_skills: [estimator-engine, quickbooks-online, mailchimp-integration, stripe-payments, outlook-graph, base44-site-spec]
+    related_skills: [estimator-engine, quickbooks-online, mailchimp-integration, stripe-payments, outlook-graph, small-business-website-spec]
 ---
 
 # CRM-Lite — Lightweight SQLite CRM for Small Business

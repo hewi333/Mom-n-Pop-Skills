@@ -81,8 +81,8 @@ non_expense_splits = [
     'Accounts Payable (A/P)',
     'Accounts Receivable (A/R)',
     "Owner's Investment",
-    'Chase Business Ink',      # credit card account name
-    'LMCU 6952',               # bank account name
+    'Main Checking 1234',     # bank account name (placeholder — use your own)
+    'Business Credit Card',   # credit card account name
     'Undeposited Funds',
     ''                         # blank = transfer
 ]

@@ -1,13 +1,13 @@
 ---
 name: lead-to-payment
 description: "Use when a new lead arrives (email, Telegram message, or website form) and needs to move through the full pipeline: qualify the lead, generate an estimate, get owner approval, create a payment link, draft a customer email for owner review, and track payment. This is the master flow that orchestrates estimator-engine, crm-lite, stripe-payments, himalaya (IMAP/SMTP), and quickbooks-online. Owner stays in the loop and approves before anything is sent or charged."
-version: "1.0.0"
+version: "2.0.0"
 author: Hermes Agent
 license: MIT
 metadata:
   hermes:
     tags: [workflow, orchestration, sales-pipeline, lead-to-cash, owner-in-the-loop]
-    related_skills: [estimator-engine, crm-lite, stripe-payments, quickbooks-online]
+    related_skills: [estimator-engine, crm-lite, stripe-payments, himalaya, grasshopper-voicemail-monitor, quickbooks-online]
 ---
 
 # Lead-to-Payment — Master Sales Flow
@@ -17,8 +17,8 @@ This is the end-to-end pipeline for a service business: a lead comes in, the age
 turns it into a priced estimate, the owner approves it over Telegram, and the agent
 creates a payment link or invoice and tracks it to paid. The owner is never bypassed —
 the agent **drafts and proposes, the human approves**, then the agent executes. This
-mirrors how a small business owner actually wants to work: they stay in control, the
-agent removes the 30–60 min of manual work per estimate.
+mirrors how a small business owner actually wants to work: they stay in control,
+the agent removes the 30–60 min of manual work per estimate.
 
 ## Environment assumptions
 - Model: `zai-org/GLM-5.2` via Together AI, **direct** (no proxy).
@@ -36,6 +36,8 @@ agent removes the 30–60 min of manual work per estimate.
 - A referral or customer inquiry arrives (e.g., 80% of leads are referral-based).
 - Owner forwards/pastes a lead to the agent in Telegram.
 - A website estimator form submission needs a real estimate + payment path.
+- A voicemail monitor (`grasshopper-voicemail-monitor`) logged a new lead and the
+  owner says "price it."
 
 ## The Flow (happy path)
 
@@ -45,7 +47,11 @@ Lead arrives one of three ways:
   runs `himalaya envelope list` to read the inbox, identifies leads vs spam/newsletters.
 - **Telegram** (always works): owner pastes "new lead: Jane Doe, 2,400 sqft home in [CITY],
   cigarette smoke, referral from [Referral Partner]."
-- **Website form** (if base44-site-spec is live): form payload hits the agent.
+- **Website form** (automated, cron-based): the site's contact form emails the owner's
+  inbox with subject `New website lead: ...` and a structured body. A `no_agent=True`
+  cron job polls the inbox every 3 min, parses the fields, logs to CRM, and delivers a
+  formatted summary to the owner's Telegram. **v2.0: this is wired and running** —
+  see `references/website-lead-intake.md` for the polling architecture.
 
 Agent extracts: customer name, contact (email/phone), property address + region,
 square footage, property type (residential/commercial/apartment), severity/service type
@@ -145,7 +151,8 @@ see it as part of the conversation.
   record is the source of truth — fine for now.
 
 ## Current state (what runs TODAY)
-- Intake: Telegram paste OR `himalaya` inbox read (GoDaddy IMAP — wired and verified).
+- Intake: Telegram paste OR `himalaya` inbox read (GoDaddy IMAP — wired and verified)
+  OR automated website-lead polling (v2.0 — wired; see `references/website-lead-intake.md`).
 - Price: estimator-engine (no creds needed, rate tables in skill config).
 - Log: crm-lite (SQLite, no creds needed).
 - Charge: Stripe payment link (test mode key set).
@@ -184,10 +191,18 @@ QuickBooks is not wired (post-hackathon P1). The Stripe record is the source of 
 - **Never auto-send customer emails.** Always draft, show the owner in Telegram, get explicit
   "send" approval, then send via himalaya.
 - **Region classification must match across all locations:** `estimator-engine/SKILL.md`
-  Location Tiers → `base44-site-spec` estimator HTML → Base44 site estimator widget. If you update
+  Location Tiers → the website estimator widget → the shared rate-card file. If you update
   one, update all three. Canonical source is `estimator-engine`.
 - **Link CLI approval holds expire in ~6 minutes.** When filming + approving real-money
   flows, set up the camera first, then trigger the spend request. Don't race the timer.
 - **One-time virtual cards don't work for recurring subscriptions.** The Link CLI issues
   one-time-use cards; the first charge works but rebilling will fail. Accepted for demo;
   handle recurring billing properly post-hackathon.
+- **Not all inbound emails are estimate requests.** Some are brochure/info requests,
+  partnership inquiries, or vendor correspondence. Do NOT run these through the estimate
+  pipeline. Classify first: marketing/brochure requests → route to the marketing owner;
+  other non-estimate inbound → ask the owner for direction. Use `himalaya message forward`
+  or a fresh email only when thread headers don't matter.
+- **Website-lead emails must match the parser.** The form's subject prefix, field names,
+  and "phone or email" validation must stay in sync with the inbox monitor script. A
+  validation change on the site is a parser change too (see `references/website-lead-intake.md`).

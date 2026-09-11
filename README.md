@@ -12,13 +12,13 @@ The skills use the [Hermes Agent](https://hermes-agent.nousresearch.com) skill f
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Hermes Agent](https://img.shields.io/badge/Hermes-Agent-blue)](https://hermes-agent.nousresearch.com)
-[![Skills](https://img.shields.io/badge/skills-14-brightgreen)](skills/)
+[![Skills](https://img.shields.io/badge/skills-16-brightgreen)](skills/)
 
 ---
 
 ## TL;DR (10-second version)
 
-- **What:** 14 composable agent skills for running a small service business (HVAC, construction, cleaning, odor removal, landscaping, consulting).
+- **What:** 16 composable agent skills for running a small service business (HVAC, construction, cleaning, odor removal, landscaping, consulting).
 - **How they work:** every skill follows one safety rule — **the agent drafts, the human owner approves, then the agent executes.** No silent charges, no surprise emails.
 - **What they are:** *reference implementations of a pattern*, sanitized of any real business data. Fork them, adapt them, don't expect turnkey SaaS.
 - **Built for:** [Hermes Agent](https://hermes-agent.nousresearch.com) skill format, but the pattern transfers to **any** framework that loads skill/prompt files.
@@ -31,7 +31,7 @@ If a human pointed you at this repo and asked *"what is this / how do we use it 
 
 ### What this repo is
 
-A library of **14 self-contained skills** in `skills/`. Each skill is a directory containing a `SKILL.md` file with:
+A library of **16 self-contained skills** in `skills/`. Each skill is a directory containing a `SKILL.md` file with:
 - **YAML frontmatter** — `name`, `description`, `version`, `metadata` (tags, related skills)
 - **Markdown body** — instructions, tool contracts, examples, and failure modes for the agent
 
@@ -63,7 +63,9 @@ Every skill enforces: **draft → owner approval → execute.** Any action that 
 | `marketing-campaign-builder` | `skills/marketing-campaign-builder/SKILL.md` | marketing | no | mailchimp (via integration) |
 | `outlook-graph` | `skills/outlook-graph/SKILL.md` | comms | ⚠️ yes | microsoft graph |
 | `construction-agent` | `skills/construction-agent/SKILL.md` | trades | ⚠️ yes | google workspace, jobtread |
-| `base44-site-spec` | `skills/base44-site-spec/SKILL.md` | web | no | none (planning reference) |
+| `small-business-website-spec` | `skills/small-business-website-spec/SKILL.md` | web | no | none (planning reference) |
+| `grasshopper-voicemail-monitor` | `skills/grasshopper-voicemail-monitor/SKILL.md` | intake / monitoring | no | imap, cron |
+| `hermes-production-ops` | `skills/hermes-production-ops/SKILL.md` | operations | ⚠️ yes | hermes gateway config |
 | `agent-cheatsheet-builder` | `skills/agent-cheatsheet-builder/SKILL.md` | meta | no | reads all skills |
 | `small-business-ai-transformation` | `skills/small-business-ai-transformation/SKILL.md` | methodology | no | none (reference guide) |
 
@@ -77,7 +79,9 @@ Every skill enforces: **draft → owner approval → execute.** Any action that 
 - **Need email in a M365 shop** → `outlook-graph`
 - **Need owner-facing docs** → `agent-cheatsheet-builder`
 - **Need a marketing loop** → `marketing-campaign-builder` + `mailchimp-integration`
-- **Need a website plan, not code dump** → `base44-site-spec`
+- **Need a website plan, not code dump** → `small-business-website-spec`
+- **Need voicemails / form emails to become leads** → `grasshopper-voicemail-monitor`
+- **Running the agent live for real users** → `hermes-production-ops`
 - **User's vertical missing** → fork the pattern from the closest skill; see [Contributing](#contributing)
 
 ### Install / load
@@ -205,7 +209,7 @@ Credentials, API keys, OAuth tokens, business data, and customer data are **not 
 
 ## Skill Catalog
 
-12 skills, grouped by role. `⚠️` = enforces an owner-approval step (spends money, sends external comms, or writes to accounting).
+16 skills, grouped by role. `⚠️` = enforces an owner-approval step (spends money, sends external comms, or writes to accounting).
 
 ### Core Business Operations
 
@@ -248,12 +252,19 @@ Credentials, API keys, OAuth tokens, business data, and customer data are **not 
 |-------|-------------|----------|------------|
 | **construction-agent** | Construction/trades agent — orchestrates email (Google Workspace), file routing (Drive), and project management (JobTread Pave API). Email→Drive→PM pipeline, email triage, project queries, daily briefings. Adaptable to Procore, Buildertrend, etc. | ⚠️ | Google Workspace, JobTread |
 
+### Operations & Infrastructure
+
+| Skill | What it does | Approval | Depends on |
+|-------|-------------|----------|------------|
+| **hermes-production-ops** | Run a live, end-user-facing agent deployment without it becoming a part-time job: switch models/providers globally, suppress restart notifications so end-users never see operational noise, tune streaming/progress config so multi-tool turns don't flood the chat, and recover from stuck states without sudo. Written from running a real gateway that two non-technical owners depend on daily. | ⚠️ | Hermes gateway |
+| **grasshopper-voicemail-monitor** | Turn voicemail-drop emails from a virtual phone provider into CRM leads and Telegram notifications — no transcription API needed, the provider already emails the transcript. Cron-based IMAP polling with the `no_agent=True` zero-cost-when-idle pattern. The same architecture handles any structured notification email (contact forms, booking alerts). | — | IMAP, cron, crm-lite |
+
 ### Onboarding & Reference
 
 | Skill | What it does | Approval | Depends on |
 |-------|-------------|----------|------------|
 | **agent-cheatsheet-builder** | Generates a one-page, plain-English cheat sheet for non-technical business owners. Scans installed skills, maps them to everyday business scenarios, produces a printable "fridge sheet" with "you say this → agent does this." | — | reads all skills |
-| **base44-site-spec** | Website architecture spec for a no-code rebuild (Base44 or similar). Page structure, copy guidelines, estimator widget HTML, SEO requirements, DNS migration notes. Planning reference, not a deploy tool. | — | — |
+| **small-business-website-spec** | Website architecture spec for a small business rebuild — two paths: no-code builder (Base44 or similar) vs static framework (Astro/Vercel). Page structure, copy guidelines, estimator widget, SEO requirements, form→agent lead intake, DNS migration notes. Planning reference, not a deploy tool. | — | — |
 | **small-business-ai-transformation** | Methodology guide — how to audit a real non-technical small service business and design an AI agent system for it. The 6-stage agent loop (find leads → qualify → estimate → book → bill → report). Read this first if you're bringing AI to a new business type. | — | — |
 
 **How to pick:** an orchestrating agent should load `lead-to-payment` plus only the leaf skills relevant to the request. A "send a marketing blast" task needs `marketing-campaign-builder` + `mailchimp-integration`; a "quote and invoice this job" task needs `estimator-engine` + `stripe-payments` + `crm-lite`.
@@ -313,8 +324,14 @@ Mom-n-Pop-Skills/
 │   │   ├── SKILL.md
 │   │   ├── references/
 │   │   └── scripts/
-│   ├── base44-site-spec/
+│   ├── small-business-website-spec/
 │   │   └── SKILL.md
+│   ├── grasshopper-voicemail-monitor/
+│   │   ├── SKILL.md
+│   │   └── references/
+│   ├── hermes-production-ops/
+│   │   ├── SKILL.md
+│   │   └── references/
 │   ├── agent-cheatsheet-builder/
 │   │   └── SKILL.md
 │   └── small-business-ai-transformation/
